@@ -1,0 +1,33 @@
+---
+import NumberFlow from '@number-flow/react'
+import { Stat } from './Stat'
+---
+<section class="bg-white py-16 sm:py-24">
+  <div class="mx-auto max-w-7xl px-6 lg:px-8">
+    <div class="mx-auto max-w-2xl lg:max-w-none">
+      <div class="text-center">
+        <h2 class="text-balance text-3xl font-semibold tracking-tight text-primary-600 sm:text-4xl font-heading">Un verdadero equipo de trabajo</h2>
+      </div>
+      <dl class="grid grid-cols-1 text-center lg:grid-cols-3 mt-12">
+        <div class="mx-auto flex flex-col gap-y-2 items-center justify-center">
+          <dt class="text-xl text-gray-600 font-subheading font-light uppercase">Obras</dt>
+          <dd class="order-first text-3xl font-semibold tracking-tight text-gray-800 sm:text-7xl font-subheading uppercase">
+            <Stat value={25} prefix="+" client:visible />
+          </dd>
+        </div>
+        <div class="mx-auto flex flex-col gap-y-2 items-center justify-center">
+          <dt class="text-xl text-gray-600 font-subheading font-light uppercase">Proyectos</dt>
+          <dd class="order-first text-3xl font-semibold tracking-tight text-gray-800 sm:text-7xl font-subheading uppercase">
+            <Stat value={7} prefix="+" client:visible />
+          </dd>
+        </div>
+        <div class="mx-auto flex flex-col gap-y-2 items-center justify-center">
+          <dt class="text-xl text-gray-600 font-subheading font-light uppercase">Paises</dt>
+          <dd class="order-first text-3xl font-semibold tracking-tight text-gray-800 sm:text-7xl font-subheading uppercase">
+            <Stat value={5}client:visible />
+          </dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+</section>
