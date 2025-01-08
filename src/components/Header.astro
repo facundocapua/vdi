@@ -1,4 +1,6 @@
 ---
+import MainMenu from "./MainMenu"
+
 const sections = [
   {
     title: 'Nosotros',
@@ -22,11 +24,13 @@ const sections = [
   }
 ]
 ---
-<header class="max-w-6xl mx-auto flex justify-between items-center my-8">
-  <a><img src="/logo.webp" width="300"/></a>
-  <nav class="flex gap-6">
+<header class="max-w-6xl mx-auto flex flex-row-reverse sm:flex-row justify-between items-center my-8 relative">
+  <!-- <a href="/" class="flex-grow flex items-center justify-center"><img src="/logo.webp" width="300"/></a> -->
+  <!-- <nav class="flex gap-6">
     {sections.map(section => (
       <a href={section.url} class="uppercase hover:text-primary-600">{section.title}</a>
     ))}
-  </nav>
+  </nav> -->
+
+  <MainMenu client:visible />
 </header>

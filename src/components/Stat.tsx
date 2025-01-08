@@ -12,7 +12,7 @@ export const Stat = ({value, prefix}: Props) => {
   const [ref, entry] = useIntersectionObserver({
     threshold: 0,
     root: null,
-    rootMargin: "0px",
+    rootMargin: "-50px",
   });
 
   useEffect(() => {
@@ -21,7 +21,7 @@ export const Stat = ({value, prefix}: Props) => {
 
   return (
     <div ref={ref}>
-      {entry?.isIntersecting ? (<NumberFlow prefix={prefix} value={displayValue} trend={1} />) : ''}
+      {entry?.isIntersecting ? (<NumberFlow spinTiming={{duration: 750}} prefix={prefix} value={displayValue} trend={1} />) : '0'}
     </div>
   )
 }

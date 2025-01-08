@@ -1,0 +1,11 @@
+---
+const { url, title, image } = Astro.props;
+---
+<a class="relative w-full overflow-hidden group" href={url}>
+  <div class="from-transparent from-0 to-100%  to-black/70 w-full h-full bg-gradient-to-b absolute z-10"></div>
+  <img src={image} class="w-full object-cover group-hover:scale-125 transition-all duration-500" />
+  <div class="absolute z-20 -bottom-10 left-0 right-0 flex flex-col items-center justify-center group-hover:bottom-4 transition-all duration-500">
+    <h3 class=" text-white text-2xl font-subheading text-center p-4">{title}</h3>
+    <button class="bg-primary-500 text-white w-max px-4 py-2 rounded-full">Ver más</button>
+  </div>
+</a>

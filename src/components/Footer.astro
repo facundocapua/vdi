@@ -3,23 +3,22 @@ import LinkedInLogo from './assets/linkedin.svg';
 import InstagramLogo from './assets/instagram.svg';
 import WhastAppLogo from './assets/whatsapp.svg';
 ---
-<footer class="bg-primary-500 pt-12 pb-12">
-  <div class="max-w-6xl mx-auto flex justify-between items-center">
+<footer class="bg-primary-500 py-8 sm:pt-12 sm:pb-12">
+  <div class="max-w-6xl mx-auto flex flex-col gap-y-8 sm:flex-row justify-between items-center">
     <div class="text-white">
-      <img src="/logo-footer.webp" width="150" />
+      <img src="/logo-footer.webp" class="w-[200px] sm:w-[150px]" />
     </div>
-    <nav class="flex gap-4">
+    <nav class="flex gap-12 sm:gap-4">
       <a href="/" class="text-white">
-        <LinkedInLogo size={24} fill="white" />
+        <LinkedInLogo size={24} fill="white" class="scale-150 sm:scale-100" />
       </a>
       <a href="https://www.instagram.com/vanguardiadesarrollosinmob/" target="_blank" rel="noopener noreferer" class="text-white">
-
-        <InstagramLogo size={24} fill="white" />
+        <InstagramLogo size={24} fill="white" class="scale-150 sm:scale-100"  />
       </a>
     </nav>
   </div>
 </footer>
 
-<a href="https://wa.me/5492494285894" target="_blank" rel="noopener noreferer" class="fixed bottom-24 right-24">
+<a href="https://wa.me/5492494285894" target="_blank" rel="noopener noreferer" class="fixed bottom-20 right-20 sm:bottom-24 sm:right-24 z-50">
   <WhastAppLogo size={70} />
 </a>

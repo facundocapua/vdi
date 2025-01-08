@@ -9,21 +9,21 @@ import { Stat } from './Stat'
         <h2 class="text-balance text-3xl font-semibold tracking-tight text-primary-600 sm:text-4xl font-heading">Un verdadero equipo de trabajo</h2>
       </div>
       <dl class="grid grid-cols-1 text-center lg:grid-cols-3 mt-12">
-        <div class="mx-auto flex flex-col gap-y-2 items-center justify-center">
-          <dt class="text-xl text-gray-600 font-subheading font-light uppercase">Obras</dt>
-          <dd class="order-first text-3xl font-semibold tracking-tight text-gray-800 sm:text-7xl font-subheading uppercase">
+        <div class="mx-auto flex flex-col sm:gap-y-2 items-center justify-center">
+          <dt class="text-3xl sm:text-xl text-gray-600 font-subheading font-light uppercase">Obras Finalizadas</dt>
+          <dd class="order-first font-semibold tracking-tight text-gray-800 text-7xl font-subheading uppercase">
             <Stat value={25} prefix="+" client:visible />
           </dd>
         </div>
-        <div class="mx-auto flex flex-col gap-y-2 items-center justify-center">
-          <dt class="text-xl text-gray-600 font-subheading font-light uppercase">Proyectos</dt>
-          <dd class="order-first text-3xl font-semibold tracking-tight text-gray-800 sm:text-7xl font-subheading uppercase">
+        <div class="mx-auto flex flex-col gap-y-2 items-center justify-center border-y-2 border-y-black/50 my-4 py-4 sm:border-y-0 sm:my-0 sm:py-4">
+          <dt class="text-3xl sm:text-xl text-gray-600 font-subheading font-light uppercase">Proyectos</dt>
+          <dd class="order-first font-semibold tracking-tight text-gray-800 text-7xl font-subheading uppercase">
             <Stat value={7} prefix="+" client:visible />
           </dd>
         </div>
-        <div class="mx-auto flex flex-col gap-y-2 items-center justify-center">
-          <dt class="text-xl text-gray-600 font-subheading font-light uppercase">Paises</dt>
-          <dd class="order-first text-3xl font-semibold tracking-tight text-gray-800 sm:text-7xl font-subheading uppercase">
+        <div class="mx-auto flex flex-col gap-y-2 items-center justify-center ">
+          <dt class="text-3xl sm:text-xl text-gray-600 font-subheading font-light uppercase">Entrega inmediata</dt>
+          <dd class="order-first font-semibold tracking-tight text-gray-800 text-7xl font-subheading uppercase">
             <Stat value={5}client:visible />
           </dd>
         </div>
