@@ -8,11 +8,6 @@ const navigation = [
     current: false
   },
   {
-    name: 'Servicios',
-    href: '/servicios',
-    current: false
-  },
-  {
     name: 'Obras y proyectos',
     href: '/obras-y-proyectos',
     current: false
