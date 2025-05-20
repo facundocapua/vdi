@@ -1,7 +1,7 @@
 export const navigation = [
   {
     name: 'Nosotros',
-    href: '/',
+    href: '/nosotros',
     current: false
   },
   {
