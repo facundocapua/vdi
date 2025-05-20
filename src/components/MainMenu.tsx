@@ -1,5 +1,3 @@
-import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { navigation } from '../utils/consts'
 import { useEffect, useState } from 'react'
 
@@ -9,6 +7,7 @@ function classNames(...classes: string[]) {
 
 export const MainMenu = () => {
   const [isScrolled, setIsScrolled] = useState(false)
+  const [currentPath, setCurrentPath] = useState('')
 
   useEffect(() => {
     const handleScroll = () => {
@@ -27,6 +26,11 @@ export const MainMenu = () => {
     return () => {
       window.removeEventListener('scroll', handleScroll)
     }
+  }, [])
+
+  useEffect(() => {
+    // Detectar la ruta actual
+    setCurrentPath(window.location.pathname)
   }, [])
 
   return (
@@ -53,20 +57,24 @@ export const MainMenu = () => {
           </div>
           <div className="hidden sm:ml-6 sm:block">
             <div className="flex space-x-4 items-center h-full">
-              {navigation.map((item) => (
-                <a
-                  key={item.name}
-                  href={item.href}
-                  aria-current={item.current ? 'page' : undefined}
-                  className={classNames(
-                    item.current ? 'bg-gray-900 text-white' : 'text-gray-600 hover:text-primary-500',
-                    'rounded-md px-3 py-2 uppercase font-medium transition-all duration-200',
-                    isScrolled ? 'text-sm py-1.5' : ''
-                  )}
-                >
-                  {item.name}
-                </a>
-              ))}
+              {navigation.map((item) => {
+                const isCurrent = currentPath === item.href || 
+                                  (item.href !== '/' && currentPath.startsWith(item.href))
+                return (
+                  <a
+                    key={item.name}
+                    href={item.href}
+                    aria-current={isCurrent ? 'page' : undefined}
+                    className={classNames(
+                      isCurrent ? 'bg-gray-900 text-white' : 'text-gray-600 hover:text-primary-500',
+                      'rounded-md px-3 py-2 uppercase font-medium transition-all duration-200',
+                      isScrolled ? 'text-sm py-1.5' : ''
+                    )}
+                  >
+                    {item.name}
+                  </a>
+                )
+              })}
             </div>
           </div>
         </div>

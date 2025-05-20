@@ -9,6 +9,7 @@ function classNames(...classes: string[]) {
 
 export const MainMenuMobile = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [currentPath, setCurrentPath] = useState('');
 
   useEffect(() => {
     const handleScroll = () => {
@@ -27,6 +28,11 @@ export const MainMenuMobile = () => {
     return () => {
       window.removeEventListener('scroll', handleScroll)
     }
+  }, [])
+
+  useEffect(() => {
+    // Detectar la ruta actual
+    setCurrentPath(window.location.pathname)
   }, [])
 
   return (
@@ -70,21 +76,25 @@ export const MainMenuMobile = () => {
             isScrolled ? 'bg-white/95' : ''
           )}>
             <div className="space-y-1 px-2 pb-3 pt-2">
-              {navigation.map((item) => (
-                <DisclosureButton
-                  key={item.name}
-                  as="a"
-                  href={item.href}
-                  aria-current={item.current ? 'page' : undefined}
-                  className={classNames(
-                    item.current ? 'bg-gray-900 text-white' : 'text-gray-600 hover:text-primary-500',
-                    'block rounded-md px-3 py-2 uppercase font-medium transition-all duration-200',
-                    isScrolled ? 'text-sm py-1.5' : ''
-                  )}
-                >
-                  {item.name}
-                </DisclosureButton>
-              ))}
+              {navigation.map((item) => {
+                const isCurrent = currentPath === item.href || 
+                                  (item.href !== '/' && currentPath.startsWith(item.href))
+                return (
+                  <DisclosureButton
+                    key={item.name}
+                    as="a"
+                    href={item.href}
+                    aria-current={isCurrent ? 'page' : undefined}
+                    className={classNames(
+                      isCurrent ? 'bg-gray-900 text-white' : 'text-gray-600 hover:text-primary-500',
+                      'block rounded-md px-3 py-2 uppercase font-medium transition-all duration-200',
+                      isScrolled ? 'text-sm py-1.5' : ''
+                    )}
+                  >
+                    {item.name}
+                  </DisclosureButton>
+                )
+              })}
             </div>
           </DisclosurePanel>
         </>
