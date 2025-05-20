@@ -1,13 +1,43 @@
 ---
 import MainMenu from "./MainMenu"
+import MainMenuMobile from "./MainMenuMobile"
 ---
 <header class="max-w-6xl mx-auto flex flex-row-reverse sm:flex-row justify-between items-center my-8 relative">
-  <!-- <a href="/" class="flex-grow flex items-center justify-center"><img src="/logo.webp" width="300"/></a> -->
-  <!-- <nav class="flex gap-6">
-    {sections.map(section => (
-      <a href={section.url} class="uppercase hover:text-primary-600">{section.title}</a>
-    ))}
-  </nav> -->
-
+  <MainMenuMobile client:visible />
   <MainMenu client:visible />
 </header>
+
+<!-- Añado un espacio para compensar cuando el menú se vuelve sticky -->
+<div id="sticky-spacer" class="hidden h-16 sm:h-20 transition-all duration-300"></div>
+
+<script>
+  // Script para ajustar el espaciado cuando el menú se vuelve sticky
+  const handleScroll = () => {
+    const spacer = document.getElementById('sticky-spacer');
+    const isMobile = window.innerWidth < 640; // breakpoint sm en Tailwind
+    
+    if (window.scrollY > 100) {
+      spacer?.classList.remove('hidden');
+      spacer?.classList.add('block');
+      
+      // Ajustamos la altura del spacer según el dispositivo
+      if (isMobile) {
+        spacer?.classList.add('h-16');
+        spacer?.classList.remove('h-20');
+      } else {
+        spacer?.classList.add('h-20');
+        spacer?.classList.remove('h-16');
+      }
+    } else {
+      spacer?.classList.remove('block');
+      spacer?.classList.add('hidden');
+    }
+  };
+
+  // Ejecutar al cargar y al cambiar el tamaño de la ventana
+  window.addEventListener('scroll', handleScroll);
+  window.addEventListener('resize', handleScroll);
+  
+  // Ejecutar una vez al principio para configurar correctamente
+  handleScroll();
+</script>
