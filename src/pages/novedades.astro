@@ -1,0 +1,31 @@
+---
+import Layout from '../layouts/Layout.astro';
+import NewsItem from '../components/NewsItem.astro';
+import { newsData } from '../utils/news-data';
+
+// Ordenamos las noticias por fecha, las más recientes primero
+const sortedNews = [...newsData].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+---
+
+<Layout>
+  <section class="py-16 bg-gray-50">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h1 class="font-heading text-3xl sm:text-5xl text-primary-500 uppercase">Novedades</h1>
+        <p class="mt-4 text-lg text-gray-600 font-subheading">Todas las noticias y actualizaciones de Vanguardia Desarrollos Inmobiliarios</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {sortedNews.map((item) => (
+          <NewsItem
+            id={item.id}
+            title={item.title}
+            excerpt={item.excerpt}
+            image={item.image}
+            date={item.date}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>

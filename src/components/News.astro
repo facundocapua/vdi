@@ -1,0 +1,36 @@
+---
+import { newsData } from '../utils/news-data';
+import NewsItem from './NewsItem.astro';
+
+// Tomamos solo las 3 noticias más recientes para la página de inicio
+const recentNews = [...newsData]
+  .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+  .slice(0, 3);
+---
+
+<section class="py-16 bg-gray-50">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <h2 class="font-heading text-2xl sm:text-5xl text-primary-500 uppercase">Últimas Novedades</h2>
+      <p class="mt-4 text-lg text-gray-600 font-subheading">Mantente al día con nuestras últimas noticias y actualizaciones</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {recentNews.map((item) => (
+        <NewsItem
+          id={item.id}
+          title={item.title}
+          excerpt={item.excerpt}
+          image={item.image}
+          date={item.date}
+        />
+      ))}
+    </div>
+
+    <div class="text-center mt-10">
+      <a href="/novedades" class="inline-block bg-primary-500 hover:bg-primary-600 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-300">
+        Ver todas las novedades
+      </a>
+    </div>
+  </div>
+</section>
