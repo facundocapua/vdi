@@ -1,0 +1,63 @@
+---
+import type { Project } from '../utils/projects-data';
+
+export interface Props {
+  project: Project;
+}
+
+const { project } = Astro.props;
+
+// Determine badge color based on category
+let categoryBadgeColor = 'bg-gray-200 text-gray-700'; // Default
+if (project.category === 'Condominio') {
+  categoryBadgeColor = 'bg-sky-100 text-sky-800';
+} else if (project.category === 'Vivienda personal') {
+  categoryBadgeColor = 'bg-emerald-100 text-emerald-800';
+} else if (project.category === 'Loteo') {
+  categoryBadgeColor = 'bg-amber-100 text-amber-800';
+}
+
+// Determine status badge color and text
+let statusBadgeColor = 'bg-gray-200 text-gray-700';
+let statusText = project.status;
+
+switch (project.status) {
+  case 'Entrega inmediata':
+    statusBadgeColor = 'bg-green-100 text-green-800';
+    break;
+  case 'Obras finalizadas':
+    statusBadgeColor = 'bg-blue-100 text-blue-800';
+    break;
+  case 'En pozo':
+    statusBadgeColor = 'bg-yellow-100 text-yellow-800';
+    break;
+  case 'Proyecto':
+    statusBadgeColor = 'bg-purple-100 text-purple-800';
+    break;
+}
+---
+<div class="border border-gray-200 p-4 rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 flex flex-col h-full">
+  <div class="relative">
+    <img src={project.mainImage} alt={`Imagen de ${project.name}`} class="w-full h-48 object-cover mb-3 rounded-md" />
+    <span class={`absolute top-2 right-2 px-2 py-1 text-xs font-semibold rounded-full ${statusBadgeColor}`}>
+      {statusText}
+    </span>
+  </div>
+  <h3 class="text-xl font-semibold text-sky-800 mb-1">{project.name}</h3>
+  <p class={`text-xs font-medium ${categoryBadgeColor} px-2 py-0.5 rounded-full self-start mb-2`}>{project.category}</p>
+  <p class="text-sm text-gray-700 mt-1 mb-3 flex-grow">{project.shortDescription}</p>
+  <a href={`/obras/${project.id}`} class="text-sky-600 hover:text-sky-700 hover:underline font-medium mt-auto inline-block pt-2 border-t border-gray-100">
+    Ver detalles &rarr;
+  </a>
+</div>
+
+<style>
+  /* Ensures all cards in a row have the same height if content varies */
+  .flex-col.h-full {
+    display: flex;
+    flex-direction: column;
+  }
+  .flex-grow {
+    flex-grow: 1;
+  }
+</style>

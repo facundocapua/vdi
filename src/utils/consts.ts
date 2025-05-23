@@ -5,13 +5,13 @@ export const navigation = [
     current: false
   },
   {
-    name: 'Obras y proyectos',
-    href: '/obras-y-proyectos',
+    name: 'Novedades',
+    href: '/novedades',
     current: false
   },
   {
-    name: 'Novedades',
-    href: '/novedades',
+    name: 'Obras y proyectos',
+    href: '/obras-y-proyectos',
     current: false
   },
   {

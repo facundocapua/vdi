@@ -1,0 +1,65 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { projectsData } from '../utils/projects-data';
+---
+<Layout title="Obras y Proyectos - Constructora XYZ">
+  <section class="py-12 md:py-16">
+    <div class="container mx-auto px-4">
+      <h1 class="text-3xl md:text-4xl font-bold text-center mb-10 text-sky-800">Nuestras Obras y Proyectos</h1>
+
+      {/* Filter Buttons */}
+      <div class="flex flex-wrap justify-center space-x-2 sm:space-x-4 mb-10">
+        <button data-filter="Todos" class="filter-btn px-4 py-2 bg-sky-700 text-white rounded-lg transition-colors duration-200 mb-2">Todos</button>
+        <button data-filter="Condominio" class="filter-btn px-4 py-2 bg-sky-100 text-sky-800 hover:bg-sky-200 rounded-lg transition-colors duration-200 mb-2">Condominio</button>
+        <button data-filter="Vivienda personal" class="filter-btn px-4 py-2 bg-sky-100 text-sky-800 hover:bg-sky-200 rounded-lg transition-colors duration-200 mb-2">Vivienda personal</button>
+        <button data-filter="Loteo" class="filter-btn px-4 py-2 bg-sky-100 text-sky-800 hover:bg-sky-200 rounded-lg transition-colors duration-200 mb-2">Loteo</button>
+      </div>
+
+      {/* Project Grid */}
+      <div id="project-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {projectsData.map(project => (
+          <div data-category={project.category} class="project-item">
+            <ProjectCard project={project} />
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const filterButtons = document.querySelectorAll('.filter-btn');
+      const projectItems = document.querySelectorAll('.project-item');
+      let activeFilter = 'Todos'; // Default active filter
+
+      function setActiveButton(btn) {
+        filterButtons.forEach(button => {
+          button.classList.remove('bg-sky-700', 'text-white');
+          button.classList.add('bg-sky-100', 'text-sky-800', 'hover:bg-sky-200');
+        });
+        btn.classList.add('bg-sky-700', 'text-white');
+        btn.classList.remove('bg-sky-100', 'text-sky-800', 'hover:bg-sky-200');
+      }
+
+      // The "Todos" button is styled as active by default in the HTML markup.
+      // So, no explicit call to setActiveButton for the initial state is needed here.
+
+      filterButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          activeFilter = button.dataset.filter;
+          setActiveButton(button);
+
+          projectItems.forEach(item => {
+            const itemCategory = item.dataset.category;
+            if (activeFilter === 'Todos' || activeFilter === itemCategory) {
+              item.style.display = 'block'; 
+            } else {
+              item.style.display = 'none';
+            }
+          });
+        });
+      });
+    });
+  </script>
+</Layout>
