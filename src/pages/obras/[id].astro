@@ -1,0 +1,117 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import { type Project, projectsData } from '../../../utils/projects-data';
+
+export async function getStaticPaths() {
+  return projectsData.map(project => ({
+    params: { id: project.id },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props as { project: Project };
+
+// Status badge styling
+let statusBadgeColor = 'bg-purple-100 text-purple-800'; // Default for 'Proyecto'
+let statusText = project.status;
+
+switch (project.status) {
+  case 'Entrega inmediata':
+    statusBadgeColor = 'bg-green-100 text-green-800';
+    break;
+  case 'Obras finalizadas':
+    statusBadgeColor = 'bg-blue-100 text-blue-800';
+    break;
+  case 'En pozo':
+    statusBadgeColor = 'bg-yellow-100 text-yellow-800';
+    break;
+}
+
+// Category badge styling
+let categoryBadgeColor = 'bg-gray-100 text-gray-800'; // Default
+if (project.category === 'Condominio') {
+  categoryBadgeColor = 'bg-sky-100 text-sky-800';
+} else if (project.category === 'Vivienda personal') {
+  categoryBadgeColor = 'bg-emerald-100 text-emerald-800';
+} else if (project.category === 'Loteo') {
+  categoryBadgeColor = 'bg-amber-100 text-amber-800';
+}
+---
+<Layout title={project.name + " - Obras y Proyectos"}>
+  <article class="container mx-auto px-4 py-10 md:py-16">
+    <div class="mb-8">
+      <a href="/obras-y-proyectos" class="inline-flex items-center text-sky-600 hover:text-sky-700 hover:underline transition-colors duration-200">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+        </svg>
+        Volver a Obras y Proyectos
+      </a>
+    </div>
+
+    <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-3 text-sky-800">{project.name}</h1>
+    
+    <div class="flex flex-wrap gap-2 mb-6">
+      <span class={`px-3 py-1 text-xs font-semibold rounded-full ${categoryBadgeColor}`}>{project.category}</span>
+      <span class={`px-3 py-1 text-xs font-semibold rounded-full ${statusBadgeColor}`}>{statusText}</span>
+    </div>
+
+    <img src={project.mainImage} alt={`Imagen principal de ${project.name}`} class="w-full max-h-[300px] sm:max-h-[400px] md:max-h-[500px] object-cover rounded-lg shadow-lg mb-8 md:mb-10" />
+
+    {project.fullDescription && (
+      <div class="prose prose-lg max-w-none mb-8 md:mb-10">
+        <Fragment set:html={project.fullDescription} />
+      </div>
+    )}
+
+    {project.images && project.images.length > 1 && ( // Show gallery only if there are images beyond the main one
+      <section class="mb-8 md:mb-10">
+        <h2 class="text-2xl md:text-3xl font-semibold mb-4 text-sky-700">Galería de Imágenes</h2>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+          {project.images.map(imageSrc => {
+            // Optional: Skip if imageSrc is the same as mainImage, assuming mainImage might be in images array
+            // if (imageSrc === project.mainImage) return null; 
+            return (
+              <a href={imageSrc} target="_blank" rel="noopener noreferrer" class="block group">
+                <img 
+                  src={imageSrc} 
+                  alt={`Imagen de ${project.name}`} 
+                  class="w-full h-32 sm:h-40 object-cover rounded-md shadow-md group-hover:shadow-xl transition-shadow duration-300" 
+                  loading="lazy"
+                />
+              </a>
+            );
+          })}
+        </div>
+      </section>
+    )}
+
+    <div class="bg-sky-50 border border-sky-200 p-6 rounded-lg shadow-sm">
+      <h3 class="text-xl md:text-2xl font-semibold mb-4 text-sky-700">Detalles Adicionales</h3>
+      <ul class="space-y-2 text-gray-700">
+        {project.location && <li><strong class="font-medium text-gray-800">Ubicación:</strong> {project.location}</li>}
+        {project.deliveryDate && <li><strong class="font-medium text-gray-800">Fecha de Entrega Estimada:</strong> {project.deliveryDate}</li>}
+        <li><strong class="font-medium text-gray-800">Categoría:</strong> {project.category}</li>
+        <li><strong class="font-medium text-gray-800">Estado:</strong> {statusText}</li>
+      </ul>
+    </div>
+
+  </article>
+</Layout>
+
+<style is:global>
+  .prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
+    color: #0c4a6e; /* text-sky-800 */
+  }
+  .prose a {
+    color: #0284c7; /* text-sky-600 */
+  }
+  .prose a:hover {
+    color: #0369a1; /* text-sky-700 */
+  }
+  .prose strong {
+    color: #1f2937; /* text-gray-800 */
+  }
+  .prose ul > li::before {
+    background-color: #374151; /* text-gray-700 */
+  }
+</style>
