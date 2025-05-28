@@ -1,0 +1,300 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { type Project, projectsData } from '../../utils/projects-data';
+
+export async function getStaticPaths() {
+  return projectsData.map(project => ({
+    params: { id: project.id },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props as { project: Project };
+
+// Status badge styling
+let statusBadgeColor = 'bg-primary-100 text-primary-800'; // Default for 'Proyecto'
+---
+<Layout title={project.name + " - Obras y Proyectos - Vanguardia Desarrollos Inmobiliarios"}>
+  <section class="bg-white py-16 sm:py-24">
+    <div class="mx-auto max-w-7xl px-6 lg:px-8">
+      <div class="mb-8">
+        <a href="/obras-y-proyectos" class="inline-flex items-center text-primary-600 hover:text-primary-700 group px-4 py-2 rounded-lg hover:bg-primary-50 transition-all duration-200 font-subheading">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 group-hover:transform group-hover:-translate-x-1 transition-transform duration-200" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+          </svg>
+          Volver a Obras y Proyectos
+        </a>
+      </div>
+
+      <div class="mx-auto max-w-2xl lg:max-w-none">
+        <div class="mb-8">
+          <h1 
+            class="text-balance text-4xl font-semibold tracking-tight text-primary-600 sm:text-5xl font-heading"
+          >
+            {project.name}
+          </h1>
+          
+          <div class="flex flex-wrap gap-2 mt-4">
+            <span 
+              class="px-3 py-1 text-sm font-medium rounded-full bg-primary-100 text-primary-800 font-subheading"
+            >
+              {project.category}
+            </span>
+            <span 
+              class="px-3 py-1 text-sm font-medium rounded-full bg-primary-500 text-white font-subheading"
+            >
+              {project.status}
+            </span>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+          <!-- Imagen principal y galería -->
+          <div class="space-y-8">
+            <div class="relative rounded-xl overflow-hidden shadow-lg group hover:shadow-xl transition-all duration-300">
+              <div id="image-wrapper" class="relative w-full h-[350px] sm:h-[400px]">
+                <img 
+                  id="main-image" 
+                  src={project.mainImage} 
+                  alt={`Imagen principal de ${project.name}`} 
+                  class="w-full h-full object-cover transition-all duration-300 ease-in-out group-hover:scale-105"
+                />
+              </div>
+              <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300"></div>
+            </div>
+
+            {project.images && project.images.length > 1 && (
+              <div class="gallery">
+                <h2 class="text-2xl font-semibold mb-4 text-primary-600 font-subheading">Galería</h2>
+                <div id="gallery-container" class="flex flex-wrap gap-3 justify-center opacity-0 translate-x-4 transition-all duration-700 ease-out">
+                  {project.images.map((imageSrc, index) => (
+                    <button
+                      class={`gallery-thumb relative border-2 rounded-md overflow-hidden transition-all duration-300 ease-in-out hover:scale-110 hover:z-10 hover:border-primary-500 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-primary-500 active:scale-95 ${index === 0 ? 'border-primary-500 shadow-md' : 'border-transparent'}`}
+                      data-image={imageSrc}
+                      data-index={index}
+                    >
+                      <img 
+                        src={imageSrc} 
+                        alt={`Vista previa de ${project.name}`} 
+                        class="w-20 h-20 object-cover"
+                      />
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          <!-- Información del proyecto -->
+          <div class="space-y-8">
+            {project.fullDescription && (
+              <div class="prose prose-lg max-w-none">
+                <Fragment set:html={project.fullDescription} />
+              </div>
+            )}
+
+            <div class="bg-primary-50 border border-primary-200 p-8 rounded-xl shadow-sm">
+              <h3 class="text-2xl font-semibold mb-6 text-primary-600 font-subheading border-b border-primary-200 pb-2">Detalles del Proyecto</h3>
+              <ul class="space-y-4 text-gray-700">
+                {project.location && (
+                  <li class="flex items-start">
+                    <div class="bg-primary-100 p-2 rounded-full mr-4 mt-1">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                      </svg>
+                    </div>
+                    <div>
+                      <span class="font-semibold text-gray-800 font-subheading">Ubicación:</span>
+                      <p class="mt-1">{project.location}</p>
+                    </div>
+                  </li>
+                )}
+                
+                {project.deliveryDate && (
+                  <li class="flex items-start">
+                    <div class="bg-primary-100 p-2 rounded-full mr-4 mt-1">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                    </div>
+                    <div>
+                      <span class="font-semibold text-gray-800 font-subheading">Fecha de Entrega:</span>
+                      <p class="mt-1">{project.deliveryDate}</p>
+                    </div>
+                  </li>
+                )}
+                
+                <li class="flex items-start">
+                  <div class="bg-primary-100 p-2 rounded-full mr-4 mt-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                    </svg>
+                  </div>
+                  <div>
+                    <span class="font-semibold text-gray-800 font-subheading">Categoría:</span>
+                    <p class="mt-1">{project.category}</p>
+                  </div>
+                </li>
+                
+                <li class="flex items-start">
+                  <div class="bg-primary-100 p-2 rounded-full mr-4 mt-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <span class="font-semibold text-gray-800 font-subheading">Estado:</span>
+                    <p class="mt-1">{project.status}</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            
+            <!-- Botón de contacto -->
+            <div class="text-center pt-4">
+              <a href="/contacto" class="cta-button inline-block px-8 py-3 bg-primary-500 text-white font-medium rounded-lg shadow-md hover:bg-primary-600 transition-all duration-300 font-subheading relative overflow-hidden group">
+                <span class="relative z-10">Consultar por este proyecto</span>
+                <span class="absolute inset-0 bg-primary-600 transform scale-x-0 origin-left group-hover:scale-x-100 transition-transform duration-300"></span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style is:global>
+  .prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
+    color: #b88c48; /* text-primary-500 */
+    font-family: 'Nexa', system-ui, sans-serif; /* font-subheading */
+  }
+  .prose a {
+    color: #b88c48; /* text-primary-500 */
+  }
+  .prose a:hover {
+    color: #966a38; /* text-primary-600 */
+  }
+  .prose strong {
+    color: #1f2937; /* text-gray-800 */
+  }
+  .prose ul > li::before {
+    background-color: #374151; /* text-gray-700 */
+  }
+  
+  .gallery-thumb.active {
+    border-color: #b88c48; /* text-primary-500 */
+    transform: scale(1.05);
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const mainImage = document.getElementById('main-image') as HTMLImageElement;
+    const thumbnails = document.querySelectorAll('.gallery-thumb');
+    const imageContainer = mainImage?.closest('.group');
+    let currentTransition: number | null = null;
+    
+    // Preload all images for smoother transitions
+    if (thumbnails.length > 0) {
+      thumbnails.forEach((thumb: Element) => {
+        const imgSrc = (thumb as HTMLElement).dataset.image;
+        if (imgSrc) {
+          const preloadImg = new Image();
+          preloadImg.src = imgSrc;
+        }
+      });
+      
+      // Marcar la primera miniatura como activa
+      thumbnails[0].classList.add('active');
+      
+      // Animar la aparición del contenedor de la galería usando Tailwind
+      const galleryContainer = document.getElementById('gallery-container');
+      if (galleryContainer) {
+        setTimeout(() => {
+          galleryContainer.classList.remove('opacity-0', 'translate-x-4');
+          galleryContainer.classList.add('opacity-100', 'translate-x-0');
+        }, 300);
+      }
+    }
+    
+    // Agregar event listeners a las miniaturas
+    thumbnails.forEach((thumb: Element) => {
+      thumb.addEventListener('click', function(this: HTMLElement) {
+        const imageSrc = this.getAttribute('data-image');
+        const imageIndex = this.getAttribute('data-index');
+        
+        // Si ya hay una transición en progreso o es la misma imagen, no hacer nada
+        if (currentTransition || !imageSrc || mainImage.src.endsWith(imageSrc.split('/').pop() as string)) {
+          return;
+        }
+        
+        // Actualizar la miniatura activa con un efecto de zoom
+        thumbnails.forEach(t => {
+          t.classList.remove('active');
+          t.classList.add('scale-100');
+        });
+        
+        this.classList.add('active');
+        this.classList.add('scale-110');
+        setTimeout(() => {
+          this.classList.remove('scale-110');
+        }, 300);
+        
+        // Animar la transición de imagen
+        if (mainImage && imageSrc) {
+          // Detener cualquier transición en progreso
+          if (currentTransition) {
+            clearTimeout(currentTransition);
+          }
+          
+          // Aplicar animación de salida con Tailwind
+          mainImage.classList.add('opacity-0', 'scale-95');
+          mainImage.classList.remove('opacity-100', 'scale-100');
+          imageContainer?.classList.add('ring', 'ring-primary-300', 'ring-opacity-50');
+          
+          // Después de un breve retraso, cambiar la imagen y aplicar animación de entrada
+          currentTransition = setTimeout(() => {
+            mainImage.src = imageSrc;
+            
+            // No es necesario actualizar atributos de view transitions
+            
+            // Aplicar animación de entrada con Tailwind
+            mainImage.classList.remove('opacity-0', 'scale-95');
+            mainImage.classList.add('opacity-100', 'scale-100');
+            
+            // Quitar el efecto de resaltado
+            imageContainer?.classList.remove('ring', 'ring-primary-300', 'ring-opacity-50');
+            
+            // Limpiar el estado de la transición
+            currentTransition = setTimeout(() => {
+              currentTransition = null;
+            }, 500);
+          }, 300);
+        }
+      });
+    });
+    
+    // Añadir navegación con teclado
+    document.addEventListener('keydown', (e) => {
+      if (!thumbnails.length) return;
+      
+      let activeIndex = -1;
+      thumbnails.forEach((thumb, i) => {
+        if (thumb.classList.contains('active')) activeIndex = i;
+      });
+      
+      if (activeIndex === -1) return;
+      
+      // Flecha derecha - siguiente imagen
+      if (e.key === 'ArrowRight' && activeIndex < thumbnails.length - 1) {
+        (thumbnails[activeIndex + 1] as HTMLElement).click();
+      }
+      // Flecha izquierda - imagen anterior
+      else if (e.key === 'ArrowLeft' && activeIndex > 0) {
+        (thumbnails[activeIndex - 1] as HTMLElement).click();
+      }
+    });
+  });
+</script>
