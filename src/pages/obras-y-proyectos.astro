@@ -3,63 +3,160 @@ import Layout from '../layouts/Layout.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import { projectsData } from '../utils/projects-data';
 ---
-<Layout title="Obras y Proyectos - Constructora XYZ">
-  <section class="py-12 md:py-16">
-    <div class="container mx-auto px-4">
-      <h1 class="text-3xl md:text-4xl font-bold text-center mb-10 text-sky-800">Nuestras Obras y Proyectos</h1>
-
-      {/* Filter Buttons */}
-      <div class="flex flex-wrap justify-center space-x-2 sm:space-x-4 mb-10">
-        <button data-filter="Todos" class="filter-btn px-4 py-2 bg-sky-700 text-white rounded-lg transition-colors duration-200 mb-2">Todos</button>
-        <button data-filter="Condominio" class="filter-btn px-4 py-2 bg-sky-100 text-sky-800 hover:bg-sky-200 rounded-lg transition-colors duration-200 mb-2">Condominio</button>
-        <button data-filter="Vivienda personal" class="filter-btn px-4 py-2 bg-sky-100 text-sky-800 hover:bg-sky-200 rounded-lg transition-colors duration-200 mb-2">Vivienda personal</button>
-        <button data-filter="Loteo" class="filter-btn px-4 py-2 bg-sky-100 text-sky-800 hover:bg-sky-200 rounded-lg transition-colors duration-200 mb-2">Loteo</button>
+<Layout title="Obras y Proyectos - Vanguardia Desarrollos Inmobiliarios">
+  <section class="bg-white py-16 sm:py-24">
+    <div class="mx-auto max-w-7xl px-6 lg:px-8">
+      <div class="mx-auto max-w-2xl lg:max-w-none">
+        <div class="text-center mb-12">
+          <h1 class="text-balance text-4xl font-semibold tracking-tight text-primary-600 sm:text-5xl font-heading transition-all duration-500">Obras y Proyectos</h1>
+          <p class="mt-6 text-lg leading-8 text-gray-600 max-w-3xl mx-auto font-subheading">
+            Descubre nuestros desarrollos inmobiliarios y encuentra tu próximo hogar
+          </p>
+        </div>
+      </div>
+      
+      <!-- Filtros -->
+      <div class="flex flex-wrap justify-center gap-3 sm:gap-4 mb-12">
+        <button data-filter="Todos" class="filter-btn relative overflow-hidden px-5 py-2 bg-primary-500 text-white rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-md active:scale-95 font-subheading">
+          Todos
+        </button>
+        <button data-filter="Condominio" class="filter-btn relative overflow-hidden px-5 py-2 bg-primary-100 text-primary-800 hover:bg-primary-200 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-md active:scale-95 font-subheading">
+          Condominios
+        </button>
+        <button data-filter="Vivienda personal" class="filter-btn relative overflow-hidden px-5 py-2 bg-primary-100 text-primary-800 hover:bg-primary-200 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-md active:scale-95 font-subheading">
+          Vivienda personal
+        </button>
+        <button data-filter="Loteo" class="filter-btn relative overflow-hidden px-5 py-2 bg-primary-100 text-primary-800 hover:bg-primary-200 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-md active:scale-95 font-subheading">
+          Loteos
+        </button>
       </div>
 
-      {/* Project Grid */}
-      <div id="project-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {projectsData.map(project => (
-          <div data-category={project.category} class="project-item">
-            <ProjectCard project={project} />
+      <!-- Proyectos Grid -->
+      <div id="project-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+        {projectsData.map((project, index) => (
+          <div 
+            data-category={project.category} 
+            class="project-item opacity-0 translate-y-8 transition-all duration-700 ease-out" 
+            style={`transition-delay: ${index * 100}ms`}
+          >
+            <a href={`/obras/${project.id}`} class="block hover:scale-[1.02] transition-transform duration-300 ease-in-out">
+              <ProjectCard project={project} />
+            </a>
           </div>
         ))}
       </div>
     </div>
   </section>
+</Layout>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const filterButtons = document.querySelectorAll('.filter-btn');
-      const projectItems = document.querySelectorAll('.project-item');
-      let activeFilter = 'Todos'; // Default active filter
+<style>
+  /* Solo mantenemos este CSS personalizado para el efecto de ripple */
+  .ripple {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    animation: rippleEffect 0.8s ease-out;
+  }
+  
+  @keyframes rippleEffect {
+    0% {
+      width: 0;
+      height: 0;
+      opacity: 0.5;
+    }
+    100% {
+      width: 300px;
+      height: 300px;
+      opacity: 0;
+    }
+  }
+</style>
 
-      function setActiveButton(btn) {
-        filterButtons.forEach(button => {
-          button.classList.remove('bg-sky-700', 'text-white');
-          button.classList.add('bg-sky-100', 'text-sky-800', 'hover:bg-sky-200');
-        });
-        btn.classList.add('bg-sky-700', 'text-white');
-        btn.classList.remove('bg-sky-100', 'text-sky-800', 'hover:bg-sky-200');
-      }
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const projectItems = document.querySelectorAll('.project-item');
+    const projectGrid = document.getElementById('project-grid');
+    
+    // Animación inicial de los elementos
+    setTimeout(() => {
+      projectItems.forEach(item => {
+        item.classList.remove('opacity-0', 'translate-y-8');
+        item.classList.add('opacity-100', 'translate-y-0');
+      });
+    }, 100);
 
-      // The "Todos" button is styled as active by default in the HTML markup.
-      // So, no explicit call to setActiveButton for the initial state is needed here.
-
+    function setActiveButton(btn: HTMLElement) {
       filterButtons.forEach(button => {
-        button.addEventListener('click', () => {
-          activeFilter = button.dataset.filter;
-          setActiveButton(button);
+        button.classList.remove('bg-primary-500', 'text-white', 'scale-105', 'shadow-md');
+        button.classList.add('bg-primary-100', 'text-primary-800', 'hover:bg-primary-200');
+      });
+      btn.classList.add('bg-primary-500', 'text-white', 'scale-105', 'shadow-md');
+      btn.classList.remove('bg-primary-100', 'text-primary-800', 'hover:bg-primary-200');
+    }
 
-          projectItems.forEach(item => {
-            const itemCategory = item.dataset.category;
-            if (activeFilter === 'Todos' || activeFilter === itemCategory) {
-              item.style.display = 'block'; 
-            } else {
-              item.style.display = 'none';
+    // Configurar animaciones de botones
+    filterButtons.forEach((button, index) => {
+      // Animación inicial de botones
+      (button as HTMLElement).style.opacity = "0";
+      (button as HTMLElement).style.transform = "translateY(10px)";
+      
+      setTimeout(() => {
+        (button as HTMLElement).style.transition = "all 0.5s ease-out";
+        (button as HTMLElement).style.opacity = "1";
+        (button as HTMLElement).style.transform = "translateY(0)";
+      }, index * 100);
+      
+      button.addEventListener('click', () => {
+        // Efecto ripple
+        const ripple = document.createElement('span');
+        ripple.classList.add('ripple');
+        button.appendChild(ripple);
+        setTimeout(() => ripple.remove(), 800);
+        
+        const activeFilter = (button as HTMLElement).dataset.filter;
+        setActiveButton(button as HTMLElement);
+        
+        // Reducir ligeramente el tamaño del grid durante el filtrado
+        if (projectGrid) {
+          projectGrid.classList.add('scale-95', 'opacity-80');
+          projectGrid.style.transition = "all 0.3s ease";
+          
+          setTimeout(() => {
+            projectGrid.classList.remove('scale-95', 'opacity-80');
+          }, 600);
+        }
+        
+        // Filtrado con animaciones usando clases de Tailwind
+        projectItems.forEach((item, index) => {
+          // Animación de salida
+          item.classList.add('opacity-0', 'translate-y-8');
+          item.classList.remove('opacity-100', 'translate-y-0');
+          
+          setTimeout(() => {
+            const itemCategory = (item as HTMLElement).dataset.category;
+            const shouldShow = activeFilter === 'Todos' || activeFilter === itemCategory;
+            
+            (item as HTMLElement).style.display = shouldShow ? 'block' : 'none';
+            
+            if (shouldShow) {
+              // Retraso escalonado
+              (item as HTMLElement).style.transitionDelay = `${index * 70}ms`;
+              
+              // Animación de entrada
+              setTimeout(() => {
+                item.classList.remove('opacity-0', 'translate-y-8');
+                item.classList.add('opacity-100', 'translate-y-0');
+              }, 50);
             }
-          });
+          }, 300);
         });
       });
     });
-  </script>
-</Layout>
+  });
+</script>
