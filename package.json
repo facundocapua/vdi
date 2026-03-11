@@ -6,8 +6,7 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro",
-    "preinstall": "node preinstall.js"
+    "astro": "astro"
   },
   "dependencies": {
     "@astrojs/react": "^4.2.7",
